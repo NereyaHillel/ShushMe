@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "290177153322",
+    "project_id": "shushme-android",
+    "storage_bucket": "shushme-android.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290177153322:android:43c8e4a94d8eedf73d0653",
+        "android_client_info": {
+          "package_name": "com.dev.nereya.shushme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290177153322-i5famoc0rp9v2tvk5052nhkkncldjg28.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADbdlLqXHqAS2vO9jqtkrNNep4Fg-v4yo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290177153322-i5famoc0rp9v2tvk5052nhkkncldjg28.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

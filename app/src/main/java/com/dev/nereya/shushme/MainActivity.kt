@@ -1,6 +1,7 @@
 package com.dev.nereya.shushme
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
@@ -15,6 +16,9 @@ import androidx.core.view.WindowInsetsCompat
 import com.dev.nereya.shushme.databinding.ActivityMainBinding
 import com.dev.nereya.shushme.utils.SingleSoundPlayer
 import com.dev.nereya.shushme.utils.SoundMeter
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var auth: FirebaseAuth
+
+    val currentUser = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -54,8 +62,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         initViews()
+        auth = Firebase.auth
 
         if (checkPermission()) {
             startListening()
@@ -63,10 +71,12 @@ class MainActivity : AppCompatActivity() {
             requestPermission()
         }
     }
+
     private fun checkPermission(): Boolean {
         val result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
         return result == PackageManager.PERMISSION_GRANTED
     }
+
     private fun startListening() {
         sm.start(this)
         handler.post(runnable)
@@ -95,6 +105,24 @@ class MainActivity : AppCompatActivity() {
                 // pass
             }
         })
+
+        if (currentUser != null)
+        {
+            binding.mainRecord.setOnClickListener {
+                startActivity(Intent(this, RecordActivity::class.java))
+                finish()
+            }
+            binding.mainMyList.setOnClickListener {
+                startActivity(Intent(this, MyListActivity::class.java))
+                finish()
+            }
+        }
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
     }
 
     override fun onResume() {

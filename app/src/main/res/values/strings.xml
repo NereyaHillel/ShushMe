@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">ShushMe</string>
     <string name="noise_level">Noise Level</string>
-    <string name="my_list">My List</string>
-    <string name="shush_threhold">Shush Threhold</string>
+    <string name="my_list">Sound List</string>
+    <string name="shush_threshold">Shush Threshold</string>
 </resources>

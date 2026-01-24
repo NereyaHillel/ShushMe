@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="60dp"
-                        android:text="Audio name"
+                        android:text="Shh.mp3"
                         android:textColor="#2d4150"
                         android:textSize="20sp" />
 
@@ -97,7 +97,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.35"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -119,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="50"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="80sp"
                 android:textStyle="bold" />
 
@@ -139,7 +140,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:elevation="5dp"
-        android:text="@string/shush_threhold"
+        android:text="@string/shush_threshold"
         android:textColor="#525e6a"
         android:textSize="11sp"
         android:textStyle="bold"
@@ -185,6 +186,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/mainMyList"
+        android:clickable="true"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
@@ -197,27 +199,35 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="#2d4150"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/myListIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/my_list_icon"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="3dp"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/my_list"
-                android:textColor="#648ae9"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_toRightOf="@id/myListIcon"/>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/mainRecord"
+        android:clickable="true"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginStart="4dp"
@@ -230,23 +240,30 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/mainMyList">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="#a0222e"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/RecordIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/record_icon"
+                android:layout_marginTop="1dp"
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Record"
-                android:textColor="#648ae9"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_toRightOf="@id/RecordIcon"
+ />
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
