@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         if (user != null) {
             binding.logInOutBtn.setImageResource(R.drawable.logout_icon)
             val name = user.displayName ?: "User"
-            binding.usernameTitle.text = "Hello $name"
+            binding.usernameTitle.text = "Hello, $name"
 
             binding.mainRecord.setOnClickListener {
                 startActivity(Intent(this, RecordActivity::class.java))
@@ -129,8 +129,10 @@ class MainActivity : AppCompatActivity() {
             }
 
         } else {
-            binding.logInOutBtn.visibility = View.GONE
-            binding.usernameTitle.text = "Hello Guest"
+            binding.logInOutBtn.setImageResource(R.drawable.login_icon)
+            binding.logInOutBtn.setOnClickListener {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
 
             binding.mainRecord.setOnClickListener {
                 binding.loginRequiredContainer.visibility = View.VISIBLE
