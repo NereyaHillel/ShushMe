@@ -19,7 +19,6 @@ import com.dev.nereya.shushme.utils.SingleSoundPlayer
 import com.dev.nereya.shushme.utils.SoundMeter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
@@ -125,6 +124,7 @@ class MainActivity : AppCompatActivity() {
             binding.logInOutBtn.setOnClickListener {
                 auth.signOut()
                 binding.loginRequiredContainer.visibility = View.GONE
+                binding.usernameTitle.text = "Hello, Guest"
                 updateUI()
             }
 

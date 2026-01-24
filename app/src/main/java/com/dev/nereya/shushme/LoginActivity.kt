@@ -34,8 +34,15 @@ class LoginActivity : AppCompatActivity() {
         if (FirebaseAuth.getInstance().currentUser == null) {
             signIn()
         } else {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            } else {
+                // Genuine failure
+                Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
         }
     }
 
@@ -45,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
             // Successfully signed in
             val user = FirebaseAuth.getInstance().currentUser
             // ...
-            Intent(this, MainActivity::class.java)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         } else {
             // Sign in failed. If response is null the user canceled the
@@ -57,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
     }
+
     private fun signIn() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
