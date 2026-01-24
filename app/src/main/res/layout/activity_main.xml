@@ -9,6 +9,82 @@
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/login_required_container"
+        android:layout_width="300dp"
+        android:visibility="invisible"
+        android:layout_height="200dp"
+        android:backgroundTint="@color/white"
+        app:cardElevation="8dp"
+        android:translationZ="100dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/login_required_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Login Required"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/login_required_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_required_title"
+                android:layout_marginTop="16dp"
+                android:text="Please login to access your list and record new sounds."
+                android:gravity="center"
+                android:textSize="16sp"
+                android:textColor="#757575"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/login_required_msg"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="CANCEL"
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#9E9E9E"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_login"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="LOGIN"
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#4285F4"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/mainCurrentAudioContainer"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
@@ -136,6 +212,7 @@
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -211,8 +288,7 @@
                 android:layout_height="25dp"
                 android:src="@drawable/my_list_icon"
                 android:layout_marginTop="2dp"
-                android:layout_marginEnd="3dp"
-                />
+                android:layout_marginEnd="3dp" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -221,7 +297,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_toRightOf="@id/myListIcon"/>
+                android:layout_toRightOf="@id/myListIcon" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -251,8 +327,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:src="@drawable/record_icon"
-                android:layout_marginTop="1dp"
-                />
+                android:layout_marginTop="1dp" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
@@ -261,8 +336,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:layout_toRightOf="@id/RecordIcon"
- />
+                android:layout_toRightOf="@id/RecordIcon" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

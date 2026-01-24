@@ -53,9 +53,12 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     // Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:34.8.0"))
+    implementation(platform(libs.firebase.bom))
 
     // Firebase Libraries
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.analytics)
+
+    //firebase ui auth
+    implementation(libs.firebase.ui.auth)
 }

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.SeekBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.dev.nereya.shushme.utils.SingleSoundPlayer
 import com.dev.nereya.shushme.utils.SoundMeter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
@@ -44,10 +46,7 @@ class MainActivity : AppCompatActivity() {
             handler.postDelayed(this, 200)
         }
     }
-
     private lateinit var auth: FirebaseAuth
-
-    val currentUser = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +61,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        initViews()
         auth = Firebase.auth
+        initViews()
 
         if (checkPermission()) {
             startListening()
@@ -91,23 +90,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        // 1. SeekBar Setup
         binding.thresholdSeekBar.setOnSeekBarChangeListener(object :
             SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 threshold = progress
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                // pass
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                // pass
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        if (currentUser != null)
-        {
+        if (auth.currentUser != null) {
             binding.mainRecord.setOnClickListener {
                 startActivity(Intent(this, RecordActivity::class.java))
                 finish()
@@ -116,6 +109,23 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, MyListActivity::class.java))
                 finish()
             }
+        } else {
+            binding.mainRecord.setOnClickListener {
+                binding.loginRequiredContainer.visibility = View.VISIBLE
+            }
+            binding.mainMyList.setOnClickListener {
+                binding.loginRequiredContainer.visibility = View.VISIBLE
+            }
+        }
+
+
+        binding.btnLogin.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
+        binding.btnCancel.setOnClickListener {
+            binding.loginRequiredContainer.visibility = View.GONE
         }
     }
 
