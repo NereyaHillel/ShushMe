@@ -90,9 +90,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        // 1. SeekBar Setup
-        binding.thresholdSeekBar.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
+        binding.thresholdSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 threshold = progress
             }
@@ -100,39 +98,52 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        if (auth.currentUser != null) {
+        binding.btnLogin.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        binding.btnCancel.setOnClickListener {
+            binding.loginRequiredContainer.visibility = View.GONE
+        }
+        updateUI()
+    }
+
+    private fun updateUI() {
+        val user = auth.currentUser
+
+        if (user != null) {
+            binding.logInOutBtn.setImageResource(R.drawable.logout_icon)
+            val name = user.displayName ?: "User"
+            binding.usernameTitle.text = "Hello $name"
+
             binding.mainRecord.setOnClickListener {
                 startActivity(Intent(this, RecordActivity::class.java))
-                finish()
             }
             binding.mainMyList.setOnClickListener {
                 startActivity(Intent(this, MyListActivity::class.java))
-                finish()
             }
+
+            binding.logInOutBtn.setOnClickListener {
+                auth.signOut()
+                binding.loginRequiredContainer.visibility = View.GONE
+                updateUI()
+            }
+
         } else {
+            binding.logInOutBtn.visibility = View.GONE
+            binding.usernameTitle.text = "Hello Guest"
+
             binding.mainRecord.setOnClickListener {
                 binding.loginRequiredContainer.visibility = View.VISIBLE
             }
             binding.mainMyList.setOnClickListener {
                 binding.loginRequiredContainer.visibility = View.VISIBLE
             }
-        }
-
-
-        binding.btnLogin.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-
-        binding.btnCancel.setOnClickListener {
-            binding.loginRequiredContainer.visibility = View.GONE
         }
     }
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
+        updateUI()
     }
 
     override fun onResume() {

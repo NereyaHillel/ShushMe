@@ -30,10 +30,11 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
         if (FirebaseAuth.getInstance().currentUser == null) {
             signIn()
         } else {
-            Intent(this, MainActivity::class.java)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
@@ -52,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
             // response.getError().getErrorCode() and handle the error.
             // ...
             Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
-            Intent(this, MainActivity::class.java)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }

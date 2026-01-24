@@ -9,6 +9,45 @@
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFE0B2"
+        android:paddingTop="20dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/username_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Hello User"
+                android:textColor="#2d4150"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/log_in_out_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:src="@drawable/login_icon" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/login_required_container"
         android:layout_width="300dp"
         android:visibility="invisible"
@@ -47,7 +86,7 @@
                 android:text="Please login to access your list and record new sounds."
                 android:gravity="center"
                 android:textSize="16sp"
-                android:textColor="#757575"/>
+                android:textColor="#757575" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,7 +104,7 @@
                     android:layout_marginEnd="8dp"
                     android:text="CANCEL"
                     android:textColor="@android:color/white"
-                    app:backgroundTint="#9E9E9E"/>
+                    app:backgroundTint="#9E9E9E" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_login"
@@ -75,7 +114,7 @@
                     android:layout_marginStart="8dp"
                     android:text="LOGIN"
                     android:textColor="@android:color/white"
-                    app:backgroundTint="#4285F4"/>
+                    app:backgroundTint="#4285F4" />
 
             </LinearLayout>
 
@@ -88,14 +127,15 @@
         android:id="@+id/mainCurrentAudioContainer"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_bias="0.1"
+        android:layout_marginTop="14dp"
         android:backgroundTint="#ebf0f5"
         app:cardCornerRadius="11dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        app:layout_constraintVertical_bias="0">
 
         <RelativeLayout
             android:layout_width="match_parent"
