@@ -5,13 +5,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.dev.nereya.shushme.databinding.ActivityMyListBinding
+import com.dev.nereya.shushme.databinding.ActivitySharedSoundsBinding
 
-class MyListActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMyListBinding
+class SharedSoundsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySharedSoundsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMyListBinding.inflate(layoutInflater)
+        binding = ActivitySharedSoundsBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -19,18 +19,8 @@ class MyListActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        initViews()
     }
 
-    private fun initViews() {
-        binding.myListBTNSharedSounds.setOnClickListener {
-            changeActivity(SharedSoundsActivity::class.java)
-        }
-    }
-
-    private fun changeActivity(java: Class<SharedSoundsActivity>) {
-        val intent = android.content.Intent(this, java)
-        startActivity(intent)
+    fun initViews(){
     }
 }
-
