@@ -50,9 +50,9 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shared_sounds_RV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/shared_sounds_RECY"
                 tools:listitem="@layout/sound_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -60,16 +60,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/shared_back_BTN"
-        android:layout_width="0dp"
+        android:layout_width="200dp"
         android:layout_height="60dp"
-        android:layout_marginStart="24dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/shared_browse_BTN"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -89,36 +88,7 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/shared_browse_BTN"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
-        android:clickable="true"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/shared_back_BTN">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#2d4150"
-            android:gravity="center">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Browse Sounds"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.dev.nereya.shushme.databinding.ActivityMainBinding
+import com.dev.nereya.shushme.model.DataManager
+import com.dev.nereya.shushme.model.SoundItem
 import com.dev.nereya.shushme.utils.SingleSoundPlayer
 import com.dev.nereya.shushme.utils.SoundMeter
 import com.google.firebase.Firebase
@@ -24,6 +26,8 @@ import com.google.firebase.auth.auth
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private var dataManager = DataManager
     private var noiseLevel = 0
     private var threshold = 50
     private lateinit var ssp: SingleSoundPlayer
@@ -68,6 +72,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestPermission()
         }
+        dataManager.currentSound = SoundItem.Builder(binding.mainSoundName.text.toString(),"test","test","test").build()
+        dataManager.addSound(dataManager.currentSound!!)
     }
 
     private fun checkPermission(): Boolean {
