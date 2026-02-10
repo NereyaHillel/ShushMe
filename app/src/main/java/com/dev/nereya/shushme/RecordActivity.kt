@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.dev.nereya.shushme.databinding.ActivityRecordBinding
 
 class RecordActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityRecordBinding
+    private lateinit var binding: ActivityRecordBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordBinding.inflate(layoutInflater)
@@ -18,6 +18,13 @@ class RecordActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        initViews()
+    }
+
+    private fun initViews() {
+        binding.recordBackBTN.setOnClickListener {
+            finish()
         }
     }
 }

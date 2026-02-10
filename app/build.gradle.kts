@@ -62,4 +62,7 @@ dependencies {
 
     //firebase ui auth
     implementation(libs.firebase.ui.auth)
+
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation(libs.firebase.storage)
 }

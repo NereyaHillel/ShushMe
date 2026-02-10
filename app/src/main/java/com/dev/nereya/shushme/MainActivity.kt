@@ -1,5 +1,6 @@
 package com.dev.nereya.shushme
 
+import SimpleSoundManager
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,7 +19,6 @@ import com.dev.nereya.shushme.databinding.ActivityMainBinding
 import com.dev.nereya.shushme.model.DataManager
 import com.dev.nereya.shushme.model.SoundItem
 import com.dev.nereya.shushme.utils.SingleSoundPlayer
-import com.dev.nereya.shushme.utils.SoundMeter
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private var noiseLevel = 0
     private var threshold = 50
     private lateinit var ssp: SingleSoundPlayer
-    private lateinit var sm: SoundMeter
+    private lateinit var sm: SimpleSoundManager
     private val PERMISSION_REQUEST_CODE = 200
     private val handler = Handler(Looper.getMainLooper())
     private val runnable = object : Runnable {
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        sm = SoundMeter()
+        sm = SimpleSoundManager(this)
         ssp = SingleSoundPlayer(this)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             requestPermission()
         }
-        dataManager.currentSound = SoundItem.Builder(binding.mainSoundName.text.toString(),"test","test","test").build()
+        dataManager.currentSound = SoundItem.Builder(binding.mainSoundName.text.toString(),"test","system",true).build()
         dataManager.addSound(dataManager.currentSound!!)
     }
 
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startListening() {
-        sm.start(this)
+        sm.startRecording()
         handler.post(runnable)
     }
 
@@ -157,18 +157,18 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (checkPermission()) {
-            sm.start(this)
+            sm.startRecording()
         }
     }
 
     override fun onPause() {
         super.onPause()
-        sm.stop()
+        sm.stopRecording()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(runnable)
-        sm.stop()
+        sm.stopRecording()
     }
 }

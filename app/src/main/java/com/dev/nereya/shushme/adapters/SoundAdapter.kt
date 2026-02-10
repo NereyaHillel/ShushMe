@@ -1,29 +1,24 @@
 package com.dev.nereya.shushme.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.dev.nereya.shushme.R
 import com.dev.nereya.shushme.databinding.SoundItemBinding
 import com.dev.nereya.shushme.interfaces.SoundCallback
 import com.dev.nereya.shushme.model.SoundItem
 
-class SoundAdapter(private val soundList: List<SoundItem>) :
-    RecyclerView.Adapter<SoundAdapter.SoundViewHolder>() {
+class SoundAdapter(
+    private val soundList: List<SoundItem>,
+    private val isSelectionMode: Boolean
+) : RecyclerView.Adapter<SoundAdapter.SoundViewHolder>() {
 
     var soundCallback: SoundCallback? = null
     private var selectedPosition = RecyclerView.NO_POSITION
 
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): SoundViewHolder {
-        val binding = SoundItemBinding
-            .inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundViewHolder {
+        val binding = SoundItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SoundViewHolder(binding)
     }
 
@@ -31,27 +26,41 @@ class SoundAdapter(private val soundList: List<SoundItem>) :
         val item = soundList[position]
         holder.binding.soundLBLTitle.text = item.title
         holder.binding.soundLBLAuthor.text = item.author
-        holder.binding.soundLBLDuration.text = item.duration
-        holder.binding.soundRadioButton.isChecked = item.isChosen
-        holder.binding.soundRadioButton.setOnClickListener {
-            if (selectedPosition != RecyclerView.NO_POSITION) {
-                soundList[selectedPosition].isChosen = false
-                notifyItemChanged(selectedPosition)
+
+        if (isSelectionMode) {
+            if (item.isChosen) {
+                holder.binding.soundImgAction.setImageResource(R.drawable.selected_sound)
+            } else {
+                holder.binding.soundImgAction.setImageResource(R.drawable.unselected_sound)
             }
+        } else {
+            holder.binding.soundImgAction.setImageResource(R.drawable.download_icon)
+        }
 
-            selectedPosition = holder.absoluteAdapterPosition
-            soundList[selectedPosition].isChosen = true
-            notifyItemChanged(selectedPosition)
-
-            soundCallback?.onSoundSelected(item, selectedPosition)
+        holder.binding.soundImgAction.setOnClickListener {
+            if (isSelectionMode) {
+                if (selectedPosition != RecyclerView.NO_POSITION) {
+                    soundList[selectedPosition].isChosen = false
+                    notifyItemChanged(selectedPosition)
+                }
+                selectedPosition = holder.absoluteAdapterPosition
+                soundList[selectedPosition].isChosen = true
+                notifyItemChanged(selectedPosition)
+            }else{
+                holder.binding.soundImgAction.visibility = View.GONE
+            }
+                soundCallback?.onSoundSelected(item, holder.absoluteAdapterPosition)
+        }
+        holder.binding.root.setOnClickListener {
+            soundCallback?.onSoundSelected(
+                item,
+                holder.absoluteAdapterPosition
+            )
         }
     }
 
     override fun getItemCount(): Int = soundList.size
-    fun getItem(position: Int): SoundItem = soundList[position]
 
     inner class SoundViewHolder(val binding: SoundItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
-
+        RecyclerView.ViewHolder(binding.root)
 }

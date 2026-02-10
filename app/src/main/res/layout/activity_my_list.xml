@@ -5,26 +5,39 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5f5fa"
     tools:context=".MyListActivity">
 
     <RelativeLayout
         android:id="@+id/myList_title_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:backgroundTint="#e6ebeb"
+        android:layout_marginTop="30dp"
         android:paddingTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/myList_title"
+            android:id="@+id/myList_title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Public Sounds"
-            android:textColor="#707070"
-            android:textSize="24sp"
+            android:layout_centerInParent="true"
+            android:text="My Sounds"
+            android:textColor="#2d3746"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/myList_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/myList_title1"
+            android:layout_centerHorizontal="true"
+            android:text="Select a sound to use"
+            android:textColor="#6e7d91"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
@@ -51,7 +64,8 @@
                 android:id="@+id/myList_sounds_RV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
+                tools:itemCount="6"
                 tools:listitem="@layout/sound_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -63,7 +77,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
         android:clickable="true"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
@@ -94,7 +108,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
         android:clickable="true"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"

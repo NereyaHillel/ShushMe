@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "290177153322-i5famoc0rp9v2tvk5052nhkkncldjg28.apps.googleusercontent.com",
+          "client_id": "290177153322-17lv65t8hqbqiv512v1muavoj23d9k4l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dev.nereya.shushme",
+            "certificate_hash": "11fc1c3759acc18242a39992b0f19d51e6f2becd"
+          }
+        },
+        {
+          "client_id": "290177153322-ti2qanjigmdrqj6p239huvrjahppt88s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

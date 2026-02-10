@@ -15,6 +15,11 @@ import com.dev.nereya.shushme.model.SoundItem
 
 class MyListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyListBinding
+
+    private lateinit var dataManager: DataManager
+    private lateinit var soundAdapter: SoundAdapter
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyListBinding.inflate(layoutInflater)
@@ -27,8 +32,8 @@ class MyListActivity : AppCompatActivity() {
         }
         initViews()
 
-        val dataManager = DataManager
-        val soundAdapter = SoundAdapter(dataManager.sounds)
+        dataManager = DataManager
+        soundAdapter = SoundAdapter(dataManager.sounds,true)
         soundAdapter.soundCallback = object : SoundCallback {
             override fun onSoundSelected(sound: SoundItem, position: Int) {
                 DataManager.currentSound = sound
@@ -49,6 +54,10 @@ class MyListActivity : AppCompatActivity() {
         binding.myListBackBTN.setOnClickListener {
             finish()
         }
+    }
+    override fun onResume() {
+        super.onResume()
+        soundAdapter.notifyDataSetChanged()
     }
 
 }
