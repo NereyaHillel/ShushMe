@@ -6,15 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dev.nereya.shushme.adapters.SoundAdapter
 import com.dev.nereya.shushme.databinding.ActivityMyListBinding
-import com.dev.nereya.shushme.interfaces.SoundCallback
+import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.DataManager
 import com.dev.nereya.shushme.model.SoundItem
+import com.google.firebase.auth.FirebaseAuth
 
 class MyListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyListBinding
+    private lateinit var auth: FirebaseAuth
 
     private lateinit var dataManager: DataManager
     private lateinit var soundAdapter: SoundAdapter
@@ -30,20 +31,10 @@ class MyListActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        initViews()
 
+        auth = FirebaseAuth.getInstance()
         dataManager = DataManager
-        soundAdapter = SoundAdapter(dataManager.sounds,true)
-        soundAdapter.soundCallback = object : SoundCallback {
-            override fun onSoundSelected(sound: SoundItem, position: Int) {
-                DataManager.currentSound = sound
-                soundAdapter.notifyItemChanged(position)
-            }
-        }
-        binding.myListSoundsRV.adapter = soundAdapter
-        val linearLayoutManager = LinearLayoutManager(this)
-        linearLayoutManager.orientation = RecyclerView.VERTICAL
-        binding.myListSoundsRV.layoutManager = linearLayoutManager
+        initViews()
     }
 
     private fun initViews() {
@@ -54,11 +45,22 @@ class MyListActivity : AppCompatActivity() {
         binding.myListBackBTN.setOnClickListener {
             finish()
         }
-    }
-    override fun onResume() {
-        super.onResume()
-        soundAdapter.notifyDataSetChanged()
+        soundAdapter = SoundAdapter(dataManager.sounds, true)
+
+        soundAdapter.soundCallback = object : SoundSelectCallback {
+            override fun onSoundSelected(sound: SoundItem, position: Int) {
+                DataManager.currentSound = sound
+                soundAdapter.notifyDataSetChanged()
+            }
+        }
+        binding.myListSoundsRV.adapter = soundAdapter
+        binding.myListSoundsRV.layoutManager = LinearLayoutManager(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        DataManager.loadFromFiles(this)
+        soundAdapter.notifyDataSetChanged()
+    }
 }
 

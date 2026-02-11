@@ -9,7 +9,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dev.nereya.shushme.adapters.SoundAdapter
 import com.dev.nereya.shushme.databinding.ActivitySharedSoundsBinding
-import com.dev.nereya.shushme.interfaces.SoundCallback
+import com.dev.nereya.shushme.interfaces.SoundPlayerCallback
+import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.DataManager
 import com.dev.nereya.shushme.model.SoundItem
 import com.dev.nereya.shushme.utils.SingleSoundPlayer
@@ -40,10 +41,13 @@ class SharedSoundsActivity : AppCompatActivity() {
 
         initViews()
 
-        soundAdapter.soundCallback = object : SoundCallback {
+        soundAdapter.soundCallback = object : SoundSelectCallback {
             override fun onSoundSelected(sound: SoundItem, position: Int) {
                 storage.getReference(sound.path).downloadUrl.addOnSuccessListener { uri ->
-                    ssp.playSound(uri.toString())
+                    ssp.play(object : SoundPlayerCallback {
+                        override fun onPlaybackFinished() {
+                        }
+                    })
                 }.addOnFailureListener {
                     Log.d("SharedSounds", "Could not fetch URL", it)
                 }

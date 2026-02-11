@@ -17,11 +17,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.dev.nereya.shushme.databinding.ActivityMainBinding
 import com.dev.nereya.shushme.model.DataManager
-import com.dev.nereya.shushme.model.SoundItem
 import com.dev.nereya.shushme.utils.SingleSoundPlayer
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.dev.nereya.shushme.interfaces.SoundPlayerCallback
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,9 +34,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var sm: SimpleSoundManager
     private val PERMISSION_REQUEST_CODE = 200
     private val handler = Handler(Looper.getMainLooper())
-    private val runnable = object : Runnable {
+    private val runnable: Runnable = object : Runnable {
         override fun run() {
-            if (!::binding.isInitialized) return
             val rawAmp = sm.amplitude
             noiseLevel = (rawAmp / 300).coerceIn(0, 100)
 
@@ -44,9 +43,23 @@ class MainActivity : AppCompatActivity() {
             binding.mainNoiseLevel.text = noiseLevel.toString()
 
             if (noiseLevel > threshold) {
-                ssp.playSound(R.raw.shh)
+                handler.removeCallbacks(this)
+                sm.stopRecording()
+                binding.noiseProgressBar.progress = 0
+                binding.mainNoiseLevel.text = "SHHH!"
+
+                ssp.play(object : SoundPlayerCallback {
+                    override fun onPlaybackFinished() {
+                        dataManager.currentSound?.let {
+                            ssp.prepareCurrentSound(it.path)
+                        }
+                        sm.startRecording()
+                        handler.post(runnable)
+                    }
+                })
+            } else {
+                handler.postDelayed(this, 200)
             }
-            handler.postDelayed(this, 200)
         }
     }
     private lateinit var auth: FirebaseAuth
@@ -56,24 +69,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
-        sm = SimpleSoundManager(this)
-        ssp = SingleSoundPlayer(this)
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        sm = SimpleSoundManager(this)
+        ssp = SingleSoundPlayer(this)
         auth = Firebase.auth
+
         initViews()
 
-        if (checkPermission()) {
-            startListening()
-        } else {
+        if (!checkPermission()) {
             requestPermission()
         }
-        dataManager.currentSound = SoundItem.Builder(binding.mainSoundName.text.toString(),"test","system",true).build()
-        dataManager.addSound(dataManager.currentSound!!)
     }
 
     private fun checkPermission(): Boolean {
@@ -83,7 +93,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun startListening() {
         sm.startRecording()
+        handler.removeCallbacks(runnable)
         handler.post(runnable)
+    }
+
+    private fun stopListening() {
+        sm.stopRecording()
+        handler.removeCallbacks(runnable)
     }
 
     private fun requestPermission() {
@@ -95,10 +111,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        binding.thresholdSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        binding.mainSoundName.text = dataManager.currentSound?.title
+        binding.thresholdSeekBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 threshold = progress
             }
+
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
@@ -117,7 +136,7 @@ class MainActivity : AppCompatActivity() {
 
         if (user != null) {
             binding.logInOutBtn.setImageResource(R.drawable.logout_icon)
-            val name = user.displayName ?: "User"
+            val name = if (user.displayName?.isEmpty() == true) "User" else user.displayName
             binding.usernameTitle.text = "Hello, $name"
 
             binding.mainRecord.setOnClickListener {
@@ -156,19 +175,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.mainSoundName.text = dataManager.currentSound?.title
+        dataManager.currentSound?.let {
+            ssp.prepareCurrentSound(it.path)
+        }
         if (checkPermission()) {
-            sm.startRecording()
+            startListening()
         }
     }
 
     override fun onPause() {
         super.onPause()
-        sm.stopRecording()
+        stopListening()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(runnable)
-        sm.stopRecording()
+        stopListening()
     }
 }

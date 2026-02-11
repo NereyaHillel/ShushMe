@@ -1,5 +1,4 @@
 import android.content.Context
-import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Build
 import java.io.File
@@ -7,10 +6,11 @@ import java.io.File
 class SimpleSoundManager(private val context: Context) {
 
     private var recorder: MediaRecorder? = null
-    private var player: MediaPlayer? = null
-    private var currentFile: File? = null
+    var currentFile: File? = null
+    var isRecording : Boolean = false
 
     fun startRecording(fileName: String = "temp") {
+        stopRecording()
         currentFile = File(context.filesDir, "$fileName.3gp")
 
         recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -32,32 +32,39 @@ class SimpleSoundManager(private val context: Context) {
     }
 
     fun stopRecording() {
-        recorder?.apply {
-            stop()
-            release()
-        }
-        recorder = null
-    }
-
-    fun playSound(fileName: String) {
-        val fileToPlay = File(context.filesDir, "$fileName.3gp")
-
-        if (fileToPlay.exists()) {
-            stopPlaying()
-
-            player = MediaPlayer().apply {
-                setDataSource(fileToPlay.absolutePath)
-                prepare()
-                start()
+        try {
+            recorder?.apply {
+                stop()
+                reset()
+                release()
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            recorder = null
+            isRecording = false
         }
     }
 
-    fun stopPlaying() {
-        player?.release()
-        player = null
+
+    fun renameSound(currentName: String, newName: String): Boolean {
+        val sourceFile = File(context.filesDir, "$currentName.3gp")
+        val destFile = File(context.filesDir, "$newName.3gp")
+
+        if (!sourceFile.exists()) return false
+        if (destFile.exists()) return false
+
+        return sourceFile.renameTo(destFile)
     }
 
+    fun deleteCurrentFile() {
+        currentFile?.delete()
+    }
+
+    fun isNameAvailable(name: String): Boolean {
+        val file = File(context.filesDir, "$name.3gp")
+        return !file.exists()
+    }
     val amplitude: Int
         get() = if (recorder != null) recorder!!.maxAmplitude else 0
 }

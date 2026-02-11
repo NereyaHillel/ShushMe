@@ -3,4 +3,7 @@
     <string name="noise_level">Noise Level</string>
     <string name="my_list">Sound List</string>
     <string name="shush_threshold">Shush Threshold</string>
+    <string name="listening_subtitle">Tap to stop recording</string>
+    <string name="tap_to_record">Tap to record an audio file</string>
+    <string name="record_success">Record Successful</string>
 </resources>

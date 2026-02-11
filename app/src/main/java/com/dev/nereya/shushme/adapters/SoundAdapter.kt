@@ -6,15 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dev.nereya.shushme.R
 import com.dev.nereya.shushme.databinding.SoundItemBinding
-import com.dev.nereya.shushme.interfaces.SoundCallback
+import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.SoundItem
+import androidx.core.graphics.toColorInt
+import com.dev.nereya.shushme.model.DataManager
 
 class SoundAdapter(
     private val soundList: List<SoundItem>,
     private val isSelectionMode: Boolean
 ) : RecyclerView.Adapter<SoundAdapter.SoundViewHolder>() {
 
-    var soundCallback: SoundCallback? = null
+    var soundCallback: SoundSelectCallback? = null
     private var selectedPosition = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundViewHolder {
@@ -28,9 +30,13 @@ class SoundAdapter(
         holder.binding.soundLBLAuthor.text = item.author
 
         if (isSelectionMode) {
-            if (item.isChosen) {
+            val isCurrentlySelected = item.path == DataManager.currentSound?.path
+
+            if (isCurrentlySelected) {
+                holder.binding.soundCVData.strokeColor = "#647de6".toColorInt()
                 holder.binding.soundImgAction.setImageResource(R.drawable.selected_sound)
             } else {
+                holder.binding.soundCVData.strokeColor = "#e1e6f0".toColorInt()
                 holder.binding.soundImgAction.setImageResource(R.drawable.unselected_sound)
             }
         } else {
@@ -46,11 +52,14 @@ class SoundAdapter(
                 selectedPosition = holder.absoluteAdapterPosition
                 soundList[selectedPosition].isChosen = true
                 notifyItemChanged(selectedPosition)
-            }else{
+
+                soundCallback?.onSoundSelected(item, selectedPosition)
+            } else {
                 holder.binding.soundImgAction.visibility = View.GONE
-            }
                 soundCallback?.onSoundSelected(item, holder.absoluteAdapterPosition)
+            }
         }
+
         holder.binding.root.setOnClickListener {
             soundCallback?.onSoundSelected(
                 item,

@@ -17,25 +17,24 @@
         android:paddingTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/username_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello, Guest"
-                android:textColor="#707070"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/username_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello, Guest"
+            android:textColor="#707070"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/log_in_out_btn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:clickable="true"
-                android:src="@drawable/login_icon" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/log_in_out_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"
+            android:src="@drawable/login_icon" />
 
     </RelativeLayout>
 
@@ -187,7 +186,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/playButton"
                         app:layout_constraintTop_toTopOf="parent" />
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
