@@ -34,7 +34,6 @@ object DataManager {
     fun loadFromFiles(context: Context) {
         val filesDir = context.filesDir
         val files = filesDir.listFiles()
-
         val currentPath = currentSound?.path
 
         sounds.clear()
@@ -44,9 +43,21 @@ object DataManager {
 
         files?.forEach { file ->
             if (file.name != "temp.3gp" && file.name.endsWith(".3gp")) {
-                val name = file.name.removeSuffix(".3gp")
+                val fullFileName = file.name.removeSuffix(".3gp")
+
+                val parts = fullFileName.split("_")
+                val displayName = parts.getOrNull(0) ?: "Unknown"
+                val authorName = parts.getOrNull(1)?.replace("_", " ") ?: "User"
+
                 val isItChosen = file.absolutePath == currentPath
-                val localSound = SoundItem.Builder(name, "User", file.absolutePath, isItChosen).build()
+
+                val localSound = SoundItem.Builder(
+                    displayName,
+                    authorName,
+                    file.absolutePath,
+                    isItChosen
+                ).build()
+
                 addSound(localSound)
             }
         }

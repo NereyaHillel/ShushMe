@@ -95,24 +95,26 @@ class RecordActivity : AppCompatActivity() {
                 val newName = editText.text.toString().trim()
 
                 if (newName.isNotEmpty()) {
-                    val success = recorder.renameSound("temp", newName)
+                    firebaseAuth.currentUser?.reload()?.addOnCompleteListener { task ->
+                        val userName = firebaseAuth.currentUser?.displayName?.replace(" ", "_") ?: "User"
+                        val persistentName = "${newName}_${userName}"
 
-                    if (success) {
-                        val finalFile = File(filesDir, "$newName.3gp")
+                        val success = recorder.renameSound("temp", persistentName)
 
-                        val soundItem = SoundItem.Builder(
-                            newName,
-                            firebaseAuth.currentUser?.displayName ?: "User",
-                            finalFile.absolutePath,
-                            false
-                        ).build()
+                        if (success) {
+                            val finalFile = File(filesDir, "$persistentName.3gp")
 
-                        dataManager.addSound(soundItem)
+                            val soundItem = SoundItem.Builder(
+                                newName,
+                                userName,
+                                finalFile.absolutePath,
+                                false
+                            ).build()
 
-                        Toast.makeText(this, "Saved as $newName!", Toast.LENGTH_SHORT).show()
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Name already exists or error occurred", Toast.LENGTH_SHORT).show()
+                            dataManager.addSound(soundItem)
+                            Toast.makeText(this, "Saved as $newName", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }
                     }
                 }
             }

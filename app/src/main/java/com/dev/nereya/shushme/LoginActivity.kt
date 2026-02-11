@@ -13,8 +13,6 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
-
-
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract(),
     ) { res ->
@@ -38,10 +36,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
-                // Genuine failure
                 Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
             }
         }
     }
@@ -78,7 +73,9 @@ class LoginActivity : AppCompatActivity() {
             .setLogo(R.mipmap.ic_launcher)
             .setTheme(R.style.Theme_ShushMe)
             .setAvailableProviders(providers)
+            .setAlwaysShowSignInMethodScreen(true)
             .build()
         signInLauncher.launch(signInIntent)
     }
+
 }
