@@ -1,6 +1,7 @@
 package com.dev.nereya.shushme
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -55,6 +56,25 @@ class MyListActivity : AppCompatActivity() {
         }
         binding.myListSoundsRV.adapter = soundAdapter
         binding.myListSoundsRV.layoutManager = LinearLayoutManager(this)
+        binding.myListBTNDelete.setOnClickListener {
+            val soundToDelete = DataManager.currentSound
+
+            if (soundToDelete?.title == "Default Shush") {
+                Toast.makeText(this, "Cannot delete default sound", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val index = soundAdapter.soundList.indexOf(soundToDelete)
+
+            if (index != -1) {
+                dataManager.currentSound = dataManager.sounds[0]
+                dataManager.currentSound?.isChosen = true
+                soundAdapter.notifyItemChanged(0)
+                dataManager.removeSound(soundToDelete!!)
+                soundAdapter.notifyItemRemoved(index)
+                soundAdapter.notifyItemRangeChanged(index, soundAdapter.soundList.size)
+            }
+        }
     }
 
     override fun onResume() {

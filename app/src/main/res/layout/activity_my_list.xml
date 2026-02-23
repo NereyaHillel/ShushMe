@@ -14,8 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:paddingTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
@@ -32,14 +30,13 @@
             android:id="@+id/myList_title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_below="@+id/myList_title1"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
             android:text="Select a sound to use"
             android:textColor="#6e7d91"
             android:textSize="14sp"
             android:textStyle="bold" />
-
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
@@ -55,20 +52,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myList_title_container">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myList_sounds_RV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/myList_sounds_RV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp"
-                tools:itemCount="6"
-                tools:listitem="@layout/sound_item" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:padding="10dp"
+            tools:listitem="@layout/sound_item" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -77,11 +66,11 @@
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/myList_BTN_delete"
         app:layout_constraintEnd_toStartOf="@+id/myList_BTN_sharedSounds"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent">
@@ -89,15 +78,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#2d4150"
-            android:gravity="center">
+            android:background="#2d4150">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="Back"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -108,31 +97,91 @@
         android:layout_height="60dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="40dp"
         android:clickable="true"
         app:cardCornerRadius="15dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/myList_back_BTN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/myList_back_BTN">
+        app:layout_constraintStart_toEndOf="@+id/myList_back_BTN"
+        app:layout_constraintTop_toTopOf="@+id/myList_back_BTN">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#2d4150"
-            android:gravity="center">
+            android:background="#2d4150">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Browse Sounds"
+                android:layout_centerInParent="true"
+                android:text="Browse"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/myList_BTN_delete"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/myList_BTN_share"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#2d4150">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Delete"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/myList_BTN_share"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="24dp"
+        android:clickable="true"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/myList_BTN_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/myList_BTN_delete"
+        app:layout_constraintTop_toTopOf="@+id/myList_BTN_delete">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#2d4150">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Share"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

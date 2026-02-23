@@ -9,6 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dev.nereya.shushme.adapters.SoundAdapter
 import com.dev.nereya.shushme.databinding.ActivitySharedSoundsBinding
+import com.dev.nereya.shushme.interfaces.FirebaseCallback
 import com.dev.nereya.shushme.interfaces.SoundPlayerCallback
 import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.DataManager
@@ -16,6 +17,7 @@ import com.dev.nereya.shushme.model.SoundItem
 import com.dev.nereya.shushme.utils.SingleSoundPlayer
 import com.google.firebase.Firebase
 import com.google.firebase.storage.storage
+import java.io.File
 
 class SharedSoundsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySharedSoundsBinding
@@ -37,23 +39,50 @@ class SharedSoundsActivity : AppCompatActivity() {
         }
 
         ssp = SingleSoundPlayer(this)
-        soundAdapter = SoundAdapter(dataManager.sharedSounds , false)
+        soundAdapter = SoundAdapter(dataManager.sharedSounds, false)
 
         initViews()
-
         soundAdapter.soundCallback = object : SoundSelectCallback {
             override fun onSoundSelected(sound: SoundItem, position: Int) {
                 storage.getReference(sound.path).downloadUrl.addOnSuccessListener { uri ->
-                    ssp.play(object : SoundPlayerCallback {
+                    ssp.playUrl(uri.toString(), object : SoundPlayerCallback {
                         override fun onPlaybackFinished() {
+                            // Reset UI or buttons if needed
                         }
                     })
+
                 }.addOnFailureListener {
                     Log.d("SharedSounds", "Could not fetch URL", it)
                 }
             }
         }
 
+        soundAdapter.firebaseCallback = object : FirebaseCallback {
+            override fun uploadSound() {
+                //pass
+            }
+            override fun downloadSound(sound: SoundItem) {
+                val soundRef = storageRef.child(sound.path)
+                val fileName = "${sound.title}_${sound.author}.3gp"
+
+                val localFile = File(filesDir, fileName)
+
+                soundRef.getFile(localFile).addOnSuccessListener {
+                    android.widget.Toast.makeText(
+                        this@SharedSoundsActivity,
+                        "Saved to My Sounds!",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }.addOnFailureListener { e ->
+                    android.widget.Toast.makeText(
+                        this@SharedSoundsActivity,
+                        "Download failed",
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("SharedSounds", "Download Error", e)
+                }
+            }
+        }
         storageRef.child("sounds").listAll()
             .addOnSuccessListener { listResult ->
                 val newSoundList = ArrayList<SoundItem>()
@@ -61,10 +90,8 @@ class SharedSoundsActivity : AppCompatActivity() {
                 for (itemRef in listResult.items) {
                     val rawName = itemRef.name
 
-                    if (!rawName.contains("__")) continue
-
                     val nameWithoutExt = rawName.substringBeforeLast(".")
-                    val parts = nameWithoutExt.split("__")
+                    val parts = nameWithoutExt.split("_")
 
                     val title = parts[0]
                     val author = if (parts.size > 1) parts[1] else "Unknown"
@@ -89,9 +116,6 @@ class SharedSoundsActivity : AppCompatActivity() {
                 Log.d("Firebase", "Error listing files", it)
             }
 
-        binding.sharedSoundsRV.adapter = soundAdapter
-        val linearLayoutManager = LinearLayoutManager(this)
-        binding.sharedSoundsRV.layoutManager = linearLayoutManager
     }
 
     override fun onDestroy() {
@@ -100,6 +124,10 @@ class SharedSoundsActivity : AppCompatActivity() {
     }
 
     fun initViews() {
+
+        binding.sharedSoundsRV.adapter = soundAdapter
+        val linearLayoutManager = LinearLayoutManager(this)
+        binding.sharedSoundsRV.layoutManager = linearLayoutManager
         binding.sharedBackBTN.setOnClickListener {
             finish()
         }

@@ -1,6 +1,6 @@
 package com.dev.nereya.shushme
 
-import SimpleSoundManager
+import SoundManager
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private var noiseLevel = 0
     private var threshold = 50
     private lateinit var ssp: SingleSoundPlayer
-    private lateinit var sm: SimpleSoundManager
+    private lateinit var sm: SoundManager
     private val PERMISSION_REQUEST_CODE = 200
     private val handler = Handler(Looper.getMainLooper())
     private val runnable: Runnable = object : Runnable {
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        sm = SimpleSoundManager(this)
+        sm = SoundManager(this)
         ssp = SingleSoundPlayer(this)
         auth = Firebase.auth
 

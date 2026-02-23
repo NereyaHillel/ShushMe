@@ -43,6 +43,28 @@ class SingleSoundPlayer(private val context: Context) {
         }
     }
 
+    fun playUrl(url: String, callback: SoundPlayerCallback) {
+        release()
+        mediaPlayer = MediaPlayer().apply {
+                setDataSource(url)
+                setOnPreparedListener { mp ->
+                    mp.start()
+                }
+
+                setOnCompletionListener {
+                    callback.onPlaybackFinished()
+                }
+
+                setOnErrorListener { mp, what, extra ->
+                    release()
+                    callback.onPlaybackFinished()
+                    true
+                }
+
+                prepareAsync()
+        }
+    }
+
     fun release() {
         try {
             if (mediaPlayer?.isPlaying == true) {

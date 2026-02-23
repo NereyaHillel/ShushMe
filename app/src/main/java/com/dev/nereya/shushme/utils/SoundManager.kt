@@ -3,7 +3,7 @@ import android.media.MediaRecorder
 import android.os.Build
 import java.io.File
 
-class SimpleSoundManager(private val context: Context) {
+class SoundManager(private val context: Context) {
 
     private var recorder: MediaRecorder? = null
     var currentFile: File? = null

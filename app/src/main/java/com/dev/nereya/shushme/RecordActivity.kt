@@ -1,6 +1,6 @@
 package com.dev.nereya.shushme
 
-import SimpleSoundManager
+import SoundManager
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
@@ -22,7 +22,7 @@ import java.io.File
 
 class RecordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordBinding
-    private lateinit var recorder: SimpleSoundManager
+    private lateinit var recorder: SoundManager
     private lateinit var dataManager: DataManager
     private lateinit var firebaseAuth: FirebaseAuth
     private var noiseLevel = 0
@@ -50,7 +50,7 @@ class RecordActivity : AppCompatActivity() {
         }
         firebaseAuth = FirebaseAuth.getInstance()
         dataManager = DataManager
-        recorder = SimpleSoundManager(this)
+        recorder = SoundManager(this)
         initViews()
     }
 
@@ -96,8 +96,9 @@ class RecordActivity : AppCompatActivity() {
 
                 if (newName.isNotEmpty()) {
                     firebaseAuth.currentUser?.reload()?.addOnCompleteListener { task ->
-                        val userName = firebaseAuth.currentUser?.displayName?.replace(" ", "_") ?: "User"
+                        val userName = firebaseAuth.currentUser?.displayName ?: "User"
                         val persistentName = "${newName}_${userName}"
+                        Toast.makeText(this, userName, Toast.LENGTH_SHORT).show()
 
                         val success = recorder.renameSound("temp", persistentName)
 
