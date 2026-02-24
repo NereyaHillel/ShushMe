@@ -14,7 +14,7 @@
     <string name="browse">Browse</string>
     <string name="custom_sound">Custom Sound</string>
     <string name="upload_your_own_sound">Upload your own sound</string>
-    <string name="listening">Listening...</string>
+    <string name="listening">Listening…</string>
     <string name="public_sounds">Public Sounds</string>
     <string name="select_a_sound_to_download">Select a sound to Download</string>
 </resources>
