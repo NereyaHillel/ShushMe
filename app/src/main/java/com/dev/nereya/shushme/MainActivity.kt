@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 sm.stopRecording()
                 binding.noiseProgressBar.progress = 0
                 binding.mainNoiseLevel.text = "SHHH!"
-//                SignalManager.getInstance().vibrate()
+                SignalManager.getInstance().vibrate()
 
                 ssp.play(object : SoundPlayerCallback {
                     override fun onPlaybackFinished() {
