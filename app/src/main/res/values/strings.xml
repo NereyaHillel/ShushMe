@@ -6,4 +6,15 @@
     <string name="listening_subtitle">Tap to stop recording</string>
     <string name="tap_to_record">Tap to record an audio file</string>
     <string name="record_success">Record Successful</string>
+    <string name="my_sounds">My Sounds</string>
+    <string name="select_a_sound_to_use">Select a sound to use</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="back">Back</string>
+    <string name="browse">Browse</string>
+    <string name="custom_sound">Custom Sound</string>
+    <string name="upload_your_own_sound">Upload your own sound</string>
+    <string name="listening">Listening...</string>
+    <string name="public_sounds">Public Sounds</string>
+    <string name="select_a_sound_to_download">Select a sound to Download</string>
 </resources>
