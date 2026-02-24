@@ -22,6 +22,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.dev.nereya.shushme.interfaces.SoundPlayerCallback
+import com.dev.nereya.shushme.utils.SignalManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 sm.stopRecording()
                 binding.noiseProgressBar.progress = 0
                 binding.mainNoiseLevel.text = "SHHH!"
+//                SignalManager.getInstance().vibrate()
 
                 ssp.play(object : SoundPlayerCallback {
                     override fun onPlaybackFinished() {

@@ -98,8 +98,6 @@ class RecordActivity : AppCompatActivity() {
                     firebaseAuth.currentUser?.reload()?.addOnCompleteListener { task ->
                         val userName = firebaseAuth.currentUser?.displayName ?: "User"
                         val persistentName = "${newName}_${userName}"
-                        Toast.makeText(this, userName, Toast.LENGTH_SHORT).show()
-
                         val success = recorder.renameSound("temp", persistentName)
 
                         if (success) {
