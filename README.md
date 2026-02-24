@@ -49,9 +49,9 @@ To run this project locally, you will need Android Studio and a Firebase project
 4.  **Sync Gradle** and run the app on a physical device (Emulators may not accurately simulate real-time microphone amplitude).
 
 ## 📱 Screenshots
-|                   Main Screen                   |                Recording Interface                |                   Community Sounds                   |
-|:-----------------------------------------------:|:-------------------------------------------------:|:----------------------------------------------------:|
-| <img src="images/main_screen.jpg" width="200"/> | <img src="images/record_screen.jpg" width="200"/> | <img src="images/Community_screen.jpg" width="200"/> |
+|                   Main Screen                   |                Recording Interface                |                   Community Sounds                   |                   User Sounds                   |
+|:-----------------------------------------------:|:-------------------------------------------------:|:----------------------------------------------------:|:-----------------------------------------------:|
+| <img src="images/main_screen.jpg" width="200"/> | <img src="images/record_screen.jpg" width="200"/> | <img src="images/community_screen.jpg" width="200"/> | <img src="images/user_sounds.jpg" width="200"/> |
 
 ## 📝 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
