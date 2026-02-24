@@ -187,11 +187,13 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         stopListening()
+        ssp.release()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(runnable)
         stopListening()
+        ssp.release()
     }
 }

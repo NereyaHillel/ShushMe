@@ -9,7 +9,7 @@ import com.dev.nereya.shushme.databinding.SoundItemBinding
 import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.SoundItem
 import androidx.core.graphics.toColorInt
-import com.dev.nereya.shushme.interfaces.FirebaseCallback
+import com.dev.nereya.shushme.interfaces.FirebaseStorageCallback
 import com.dev.nereya.shushme.model.DataManager
 
 class SoundAdapter(
@@ -18,7 +18,7 @@ class SoundAdapter(
 ) : RecyclerView.Adapter<SoundAdapter.SoundViewHolder>() {
 
     var soundCallback: SoundSelectCallback? = null
-    var firebaseCallback: FirebaseCallback? = null
+    var firebaseCallback: FirebaseStorageCallback? = null
     var selectedPosition = RecyclerView.NO_POSITION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundViewHolder {
@@ -56,6 +56,7 @@ class SoundAdapter(
                 notifyItemChanged(selectedPosition)
 
                 soundCallback?.onSoundSelected(item, selectedPosition)
+                firebaseCallback?.uploadSound()
             } else {
                 holder.binding.soundImgAction.visibility = View.GONE
                 soundCallback?.onSoundSelected(item, holder.absoluteAdapterPosition)

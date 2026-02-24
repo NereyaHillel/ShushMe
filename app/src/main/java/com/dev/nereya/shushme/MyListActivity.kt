@@ -1,5 +1,6 @@
 package com.dev.nereya.shushme
 
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +13,11 @@ import com.dev.nereya.shushme.databinding.ActivityMyListBinding
 import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.DataManager
 import com.dev.nereya.shushme.model.SoundItem
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.storage
+import java.io.File
 
 class MyListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyListBinding
@@ -20,6 +25,9 @@ class MyListActivity : AppCompatActivity() {
 
     private lateinit var dataManager: DataManager
     private lateinit var soundAdapter: SoundAdapter
+
+    private val storage = Firebase.storage
+    private lateinit var storageRef: StorageReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,12 +42,13 @@ class MyListActivity : AppCompatActivity() {
         }
 
         auth = FirebaseAuth.getInstance()
+        storageRef = storage.reference.child("sounds")
         dataManager = DataManager
         initViews()
     }
 
     private fun initViews() {
-        binding.myListBTNSharedSounds.setOnClickListener {
+        binding.myListBTNBrowse.setOnClickListener {
             val intent = android.content.Intent(this, SharedSoundsActivity::class.java)
             startActivity(intent)
         }
@@ -52,6 +61,30 @@ class MyListActivity : AppCompatActivity() {
             override fun onSoundSelected(sound: SoundItem, position: Int) {
                 DataManager.currentSound = sound
                 soundAdapter.notifyDataSetChanged()
+            }
+        }
+        binding.myListBTNShare.setOnClickListener {
+            binding.mainMyListShareProgress.visibility = android.view.View.VISIBLE
+            val soundToShare = DataManager.currentSound
+
+            if (soundToShare == null || soundToShare.path == "system_resource") {
+                Toast.makeText(this, "Cannot share the default sound", Toast.LENGTH_SHORT).show()
+                binding.mainMyListShareProgress.visibility = android.view.View.INVISIBLE
+                return@setOnClickListener
+            }
+
+            val fileUri = Uri.fromFile(File(soundToShare.path))
+            val fileName = "${soundToShare.title}_${soundToShare.author}.3gp"
+            val soundRef = storageRef.child("$fileName")
+
+            val uploadTask = soundRef.putFile(fileUri)
+
+            uploadTask.addOnFailureListener {
+                Toast.makeText(this, "Upload failed", Toast.LENGTH_SHORT).show()
+            }.addOnSuccessListener {
+                Toast.makeText(this, "Shared successfully!", Toast.LENGTH_SHORT).show()
+            }.addOnCompleteListener {
+                binding.mainMyListShareProgress.visibility = android.view.View.INVISIBLE
             }
         }
         binding.myListSoundsRV.adapter = soundAdapter

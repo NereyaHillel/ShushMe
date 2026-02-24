@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dev.nereya.shushme.adapters.SoundAdapter
 import com.dev.nereya.shushme.databinding.ActivitySharedSoundsBinding
-import com.dev.nereya.shushme.interfaces.FirebaseCallback
+import com.dev.nereya.shushme.interfaces.FirebaseStorageCallback
 import com.dev.nereya.shushme.interfaces.SoundPlayerCallback
 import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.DataManager
@@ -41,6 +41,7 @@ class SharedSoundsActivity : AppCompatActivity() {
         ssp = SingleSoundPlayer(this)
         soundAdapter = SoundAdapter(dataManager.sharedSounds, false)
 
+        fetchSharedSounds()
         initViews()
         soundAdapter.soundCallback = object : SoundSelectCallback {
             override fun onSoundSelected(sound: SoundItem, position: Int) {
@@ -57,10 +58,11 @@ class SharedSoundsActivity : AppCompatActivity() {
             }
         }
 
-        soundAdapter.firebaseCallback = object : FirebaseCallback {
+        soundAdapter.firebaseCallback = object : FirebaseStorageCallback {
             override fun uploadSound() {
                 //pass
             }
+
             override fun downloadSound(sound: SoundItem) {
                 val soundRef = storageRef.child(sound.path)
                 val fileName = "${sound.title}_${sound.author}.3gp"
@@ -83,6 +85,10 @@ class SharedSoundsActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun fetchSharedSounds() {
+        binding.sharedSoundsFirebaseProgress.visibility = android.view.View.VISIBLE
         storageRef.child("sounds").listAll()
             .addOnSuccessListener { listResult ->
                 val newSoundList = ArrayList<SoundItem>()
@@ -115,7 +121,9 @@ class SharedSoundsActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Log.d("Firebase", "Error listing files", it)
             }
-
+            .addOnCompleteListener {
+                binding.sharedSoundsFirebaseProgress.visibility = android.view.View.INVISIBLE
+            }
     }
 
     override fun onDestroy() {
