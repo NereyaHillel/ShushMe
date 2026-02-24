@@ -38,7 +38,7 @@ To run this project locally, you will need Android Studio and a Firebase project
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YourUsername/ShushMe.git](https://github.com/NereyaHillel/ShushMe)
+    git clone https://github.com/NereyaHillel/ShushMe
     ```
 2.  **Open the project** in Android Studio.
 3.  **Firebase Setup:**
