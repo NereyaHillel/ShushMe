@@ -17,6 +17,7 @@ import com.dev.nereya.shushme.databinding.ActivityRecordBinding
 import androidx.core.graphics.toColorInt
 import com.dev.nereya.shushme.model.DataManager
 import com.dev.nereya.shushme.model.SoundItem
+import com.dev.nereya.shushme.utils.SignalManager
 import com.google.firebase.auth.FirebaseAuth
 import java.io.File
 
@@ -111,7 +112,7 @@ class RecordActivity : AppCompatActivity() {
                             ).build()
 
                             dataManager.addSound(soundItem)
-                            Toast.makeText(this, "Saved as $newName", Toast.LENGTH_SHORT).show()
+                            SignalManager.getInstance().toast("Saved as $newName", SignalManager.ToastLength.SHORT)
                             finish()
                         }
                     }

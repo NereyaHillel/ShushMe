@@ -41,10 +41,8 @@ class SoundAdapter(
                 holder.binding.soundCVData.strokeColor = "#e1e6f0".toColorInt()
                 holder.binding.soundImgAction.setImageResource(R.drawable.unselected_sound)
             }
-            // Ensure the icon is visible in case a GONE view was recycled
             holder.binding.soundImgAction.visibility = View.VISIBLE
         } else {
-            // Check if the file already exists in local storage
             val context = holder.itemView.context
             val fileName = "${item.title}_${item.author}.3gp"
             val localFile = java.io.File(context.filesDir, fileName)
@@ -70,7 +68,6 @@ class SoundAdapter(
                 soundCallback?.onSoundSelected(item, selectedPosition)
                 firebaseCallback?.uploadSound()
             } else {
-                // Hide immediately on click to prevent spam clicking
                 holder.binding.soundImgAction.visibility = View.GONE
                 soundCallback?.onSoundSelected(item, holder.absoluteAdapterPosition)
                 firebaseCallback?.downloadSound(item)

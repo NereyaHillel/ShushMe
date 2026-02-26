@@ -11,7 +11,6 @@ class SoundManager(private val context: Context) {
 
     fun startRecording(fileName: String = "temp") {
         stopRecording()
-        currentFile = File(context.filesDir, "$fileName.3gp")
 
         recorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             MediaRecorder(context)
@@ -24,7 +23,13 @@ class SoundManager(private val context: Context) {
             setAudioSource(MediaRecorder.AudioSource.MIC)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
             setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-            setOutputFile(currentFile?.absolutePath)
+
+            if (fileName == "temp") {
+                setOutputFile("/dev/null")
+            } else {
+                currentFile = File(context.filesDir, "$fileName.3gp")
+                setOutputFile(currentFile?.absolutePath)
+            }
 
             prepare()
             start()
@@ -57,14 +62,6 @@ class SoundManager(private val context: Context) {
         return sourceFile.renameTo(destFile)
     }
 
-    fun deleteCurrentFile() {
-        currentFile?.delete()
-    }
-
-    fun isNameAvailable(name: String): Boolean {
-        val file = File(context.filesDir, "$name.3gp")
-        return !file.exists()
-    }
     val amplitude: Int
         get() = if (recorder != null) recorder!!.maxAmplitude else 0
 }

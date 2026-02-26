@@ -13,6 +13,7 @@ import com.dev.nereya.shushme.databinding.ActivityMyListBinding
 import com.dev.nereya.shushme.interfaces.SoundSelectCallback
 import com.dev.nereya.shushme.model.DataManager
 import com.dev.nereya.shushme.model.SoundItem
+import com.dev.nereya.shushme.utils.SignalManager
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.StorageReference
@@ -68,7 +69,7 @@ class MyListActivity : AppCompatActivity() {
             val soundToShare = DataManager.currentSound
 
             if (soundToShare == null || soundToShare.path == "system_resource") {
-                Toast.makeText(this, "Cannot share the default sound", Toast.LENGTH_SHORT).show()
+                SignalManager.getInstance().toast("Cannot share default sound", SignalManager.ToastLength.SHORT)
                 binding.mainMyListShareProgress.visibility = android.view.View.INVISIBLE
                 return@setOnClickListener
             }
@@ -80,9 +81,9 @@ class MyListActivity : AppCompatActivity() {
             val uploadTask = soundRef.putFile(fileUri)
 
             uploadTask.addOnFailureListener {
-                Toast.makeText(this, "Upload failed", Toast.LENGTH_SHORT).show()
+                SignalManager.getInstance().toast("Upload failed", SignalManager.ToastLength.SHORT)
             }.addOnSuccessListener {
-                Toast.makeText(this, "Shared successfully!", Toast.LENGTH_SHORT).show()
+                SignalManager.getInstance().toast("Upload successful", SignalManager.ToastLength.SHORT)
             }.addOnCompleteListener {
                 binding.mainMyListShareProgress.visibility = android.view.View.INVISIBLE
             }
@@ -93,7 +94,7 @@ class MyListActivity : AppCompatActivity() {
             val soundToDelete = DataManager.currentSound
 
             if (soundToDelete?.title == "Default Shush") {
-                Toast.makeText(this, "Cannot delete default sound", Toast.LENGTH_SHORT).show()
+                SignalManager.getInstance().toast("Cannot delete default sound", SignalManager.ToastLength.SHORT)
                 return@setOnClickListener
             }
 

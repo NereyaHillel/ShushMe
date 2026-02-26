@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.dev.nereya.shushme.utils.SignalManager
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
@@ -36,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
-                Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
+                SignalManager.getInstance().toast("Sign in failed", SignalManager.ToastLength.SHORT)
             }
         }
     }
@@ -54,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
             // ...
-            Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show()
+            SignalManager.getInstance().toast("Sign in failed", SignalManager.ToastLength.SHORT)
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

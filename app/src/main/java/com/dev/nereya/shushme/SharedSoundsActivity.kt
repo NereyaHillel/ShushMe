@@ -48,7 +48,6 @@ class SharedSoundsActivity : AppCompatActivity() {
                 storage.getReference(sound.path).downloadUrl.addOnSuccessListener { uri ->
                     ssp.playUrl(uri.toString(), object : SoundPlayerCallback {
                         override fun onPlaybackFinished() {
-                            // Reset UI or buttons if needed
                         }
                     })
 

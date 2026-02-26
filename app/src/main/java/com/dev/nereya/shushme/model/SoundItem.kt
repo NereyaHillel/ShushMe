@@ -25,6 +25,4 @@ data class SoundItem private constructor(
         fun build() = SoundItem(title, author,  path, isChosen)
     }
 
-
-
 }

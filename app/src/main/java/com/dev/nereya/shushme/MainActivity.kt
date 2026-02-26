@@ -87,23 +87,19 @@ class MainActivity : AppCompatActivity() {
             requestPermission()
         }
     }
-
     private fun checkPermission(): Boolean {
         val result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
         return result == PackageManager.PERMISSION_GRANTED
     }
-
     private fun startListening() {
         sm.startRecording()
         handler.removeCallbacks(runnable)
         handler.post(runnable)
     }
-
     private fun stopListening() {
         sm.stopRecording()
         handler.removeCallbacks(runnable)
     }
-
     private fun requestPermission() {
         ActivityCompat.requestPermissions(
             this,
@@ -111,7 +107,6 @@ class MainActivity : AppCompatActivity() {
             PERMISSION_REQUEST_CODE
         )
     }
-
     private fun initViews() {
         binding.mainSoundName.text = dataManager.currentSound?.title
         binding.thresholdSeekBar.setOnSeekBarChangeListener(object :
@@ -132,7 +127,6 @@ class MainActivity : AppCompatActivity() {
         }
         updateUI()
     }
-
     private fun updateUI() {
         val user = auth.currentUser
 
