@@ -31,18 +31,26 @@ class SoundManager(private val context: Context) {
                 setOutputFile(currentFile?.absolutePath)
             }
 
-            prepare()
-            start()
+            try {
+                prepare()
+                start()
+                isRecording = true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                stopRecording()
+            }
         }
     }
 
     fun stopRecording() {
         try {
-            recorder?.apply {
-                stop()
-                reset()
-                release()
-            }
+            recorder?.stop()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        try {
+            recorder?.reset()
+            recorder?.release()
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
