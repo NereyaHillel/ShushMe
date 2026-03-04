@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.dev.nereya.shushme.interfaces.SoundPlayerCallback
 import com.dev.nereya.shushme.utils.SignalManager
+import com.dev.nereya.shushme.utils.Constants
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,15 +31,15 @@ class MainActivity : AppCompatActivity() {
 
     private var dataManager = DataManager
     private var noiseLevel = 0
-    private var threshold = 50
+    private var threshold = Constants.UI.DEFAULT_THRESHOLD
     private lateinit var ssp: SingleSoundPlayer
     private lateinit var am: AudioManager
-    private val PERMISSION_REQUEST_CODE = 200
+    private val PERMISSION_REQUEST_CODE = Constants.Permissions.RECORD_AUDIO_REQUEST_CODE
     private val handler = Handler(Looper.getMainLooper())
     private val runnable: Runnable = object : Runnable {
         override fun run() {
             val rawAmp = am.currentAmplitude
-            noiseLevel = (rawAmp / 300).coerceIn(0, 100)
+            noiseLevel = (rawAmp / Constants.Audio.DEFAULT_AMPLITUDE_DIVISOR).coerceIn(0, 100)
 
             binding.noiseProgressBar.progress = noiseLevel
             binding.mainNoiseLevel.text = noiseLevel.toString()
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
             } else {
-                handler.postDelayed(this, 200)
+                handler.postDelayed(this, Constants.Audio.POLL_INTERVAL_MS)
             }
         }
     }
@@ -145,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             binding.logInOutBtn.setOnClickListener {
                 auth.signOut()
                 binding.loginRequiredContainer.visibility = View.GONE
-                binding.usernameTitle.text = "Hello, Guest"
+                binding.usernameTitle.text = "Hello, ${Constants.UI.GUEST_NAME}"
                 updateUI()
             }
 

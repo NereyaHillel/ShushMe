@@ -20,9 +20,7 @@ Instead of relying on `MediaRecorder`'s built-in amplitude estimations, ShushMe 
 * **Hardware Configuration:** The audio stream is configured at a professional sample rate of 44,100 Hz, capturing a single mono channel using 16-bit PCM encoding (`AudioFormat.ENCODING_PCM_16BIT`). This ensures high fidelity and precise mathematical calculations.
 * **Buffer Allocation:** The app uses `AudioRecord.getMinBufferSize()` to dynamically request the minimum memory footprint required by the Android OS to stream this data without dropping frames.
 * **Blocking I/O & Threading:** Reading from the hardware buffer via `listener?.read()` is a blocking call. To prevent freezing the UI and triggering an Application Not Responding (ANR) crash, this read loop is strictly confined to a dedicated background `Thread`.
-* **RMS Amplitude Calculation:** To calculate the actual "loudness" (power) of the environment, the background thread continuously reads audio chunks into a `ShortArray`. It computes the Root Mean Square (RMS) of these discrete samples:
 
-$$RMS = \sqrt{\frac{1}{N} \sum_{i=0}^{N-1} buffer[i]^2}$$
 
 
 

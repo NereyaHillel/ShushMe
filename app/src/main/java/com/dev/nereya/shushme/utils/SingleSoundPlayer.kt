@@ -12,7 +12,7 @@ class SingleSoundPlayer(private val context: Context) {
         try {
             release()
             mediaPlayer = MediaPlayer().apply {
-                if (path == "system_resource") {
+                if (path == Constants.UI.SYSTEM_RESOURCE_PATH) {
                     val afd = context.resources.openRawResourceFd(R.raw.shh)
                     setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
                     afd.close()

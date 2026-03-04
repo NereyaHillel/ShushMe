@@ -9,7 +9,6 @@ import android.media.MediaRecorder
 import android.os.Build
 import androidx.core.content.ContextCompat
 import java.io.File
-import kotlin.math.sqrt
 
 class AudioManager(private val context: Context) {
 
@@ -17,8 +16,8 @@ class AudioManager(private val context: Context) {
     var currentFile: File? = null
     private var listener: AudioRecord? = null
     var isRecording: Boolean = false
+    var isListeningForNoise: Boolean = false
 
-    // We will store the live RMS value here for MainActivity to read
     var currentAmplitude: Int = 0
         private set
 
@@ -26,19 +25,16 @@ class AudioManager(private val context: Context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
             != PackageManager.PERMISSION_GRANTED) return
 
-        // 1. Define standard audio settings
-        val sampleRate = 44100
+        val sampleRate = Constants.Audio.SAMPLE_RATE
         val channelConfig = AudioFormat.CHANNEL_IN_MONO
         val audioFormat = AudioFormat.ENCODING_PCM_16BIT
 
-        // 2. Ask Android for the safe buffer size
         val bufferSize = AudioRecord.getMinBufferSize(sampleRate, channelConfig, audioFormat)
 
         if (bufferSize == AudioRecord.ERROR || bufferSize == AudioRecord.ERROR_BAD_VALUE) {
             return
         }
 
-        // 3. Initialize the AudioRecord safely
         listener = AudioRecord(
             MediaRecorder.AudioSource.MIC,
             sampleRate,
@@ -52,32 +48,28 @@ class AudioManager(private val context: Context) {
         }
 
         listener?.startRecording()
-        isRecording = true
-
-        // 4. Start a background thread to continuously read the live sound
+        isListeningForNoise = true
         Thread {
             val buffer = ShortArray(bufferSize)
-            while (isRecording) {
-                // Read a chunk of audio from the microphone
+            while (isListeningForNoise) {
                 val readResult = listener?.read(buffer, 0, bufferSize) ?: 0
 
                 if (readResult > 0) {
-                    // Calculate RMS (Average Loudness)
-                    var sum = 0.0
+                    var maxAmplitude = 0
                     for (i in 0 until readResult) {
-                        sum += buffer[i] * buffer[i]
+                        val absVal = kotlin.math.abs(buffer[i].toInt())
+                        if (absVal > maxAmplitude) {
+                            maxAmplitude = absVal
+                        }
                     }
-                    val rms = sqrt(sum / readResult)
-
-
-                    currentAmplitude = rms.toInt()
+                    currentAmplitude = maxAmplitude
                 }
             }
         }.start()
     }
 
     fun stopListening() {
-        isRecording = false
+        isListeningForNoise = false
         try {
             listener?.stop()
             listener?.release()

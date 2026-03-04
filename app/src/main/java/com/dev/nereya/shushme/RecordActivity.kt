@@ -14,6 +14,7 @@ import com.dev.nereya.shushme.databinding.ActivityRecordBinding
 import androidx.core.graphics.toColorInt
 import com.dev.nereya.shushme.model.DataManager
 import com.dev.nereya.shushme.model.SoundItem
+import com.dev.nereya.shushme.utils.Constants
 import com.dev.nereya.shushme.utils.SignalManager
 import com.google.firebase.auth.FirebaseAuth
 import java.io.File
@@ -53,14 +54,14 @@ class RecordActivity : AppCompatActivity() {
                 binding.recordUploadTitle.text = getString(R.string.listening_subtitle)
                 binding.noiseProgressBar.visibility = View.VISIBLE
                 binding.recordUploadPic.backgroundTintList =
-                    ColorStateList.valueOf("#FF1744".toColorInt())
+                    ColorStateList.valueOf(Constants.Colors.RECORDING_ACTIVE.toColorInt())
                 recorder.isRecording = true
             } else {
                 binding.recordUploadListening.visibility = View.GONE
                 binding.recordUploadTitle.text = getString(R.string.tap_to_record)
                 binding.noiseProgressBar.visibility = View.GONE
                 binding.recordUploadPic.backgroundTintList =
-                    ColorStateList.valueOf("#BBDEFB".toColorInt())
+                    ColorStateList.valueOf(Constants.Colors.RECORDING_INACTIVE.toColorInt())
                 showRenameDialog()
                 recorder.stopRecording()
             }
@@ -79,7 +80,7 @@ class RecordActivity : AppCompatActivity() {
 
                 if (newName.isNotEmpty()) {
                     firebaseAuth.currentUser?.reload()?.addOnCompleteListener { _ ->
-                        val userName = firebaseAuth.currentUser?.displayName ?: "User"
+                        val userName = firebaseAuth.currentUser?.displayName ?: Constants.UI.DEFAULT_USER_NAME
                         val persistentName = "${newName}_${userName}"
                         val success = recorder.renameSound("temp", persistentName)
 

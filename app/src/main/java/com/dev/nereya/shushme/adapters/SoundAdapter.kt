@@ -11,6 +11,7 @@ import com.dev.nereya.shushme.model.SoundItem
 import androidx.core.graphics.toColorInt
 import com.dev.nereya.shushme.interfaces.FirebaseStorageCallback
 import com.dev.nereya.shushme.model.DataManager
+import com.dev.nereya.shushme.utils.Constants
 
 class SoundAdapter(
     val soundList: List<SoundItem>,
@@ -35,10 +36,10 @@ class SoundAdapter(
             val isCurrentlySelected = item.path == DataManager.currentSound?.path
 
             if (isCurrentlySelected) {
-                holder.binding.soundCVData.strokeColor = "#647de6".toColorInt()
+                holder.binding.soundCVData.strokeColor = Constants.Colors.SELECTED_STROKE.toColorInt()
                 holder.binding.soundImgAction.setImageResource(R.drawable.selected_sound)
             } else {
-                holder.binding.soundCVData.strokeColor = "#e1e6f0".toColorInt()
+                holder.binding.soundCVData.strokeColor = Constants.Colors.UNSELECTED_STROKE.toColorInt()
                 holder.binding.soundImgAction.setImageResource(R.drawable.unselected_sound)
             }
             holder.binding.soundImgAction.visibility = View.VISIBLE
