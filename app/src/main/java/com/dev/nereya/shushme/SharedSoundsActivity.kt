@@ -64,7 +64,7 @@ class SharedSoundsActivity : AppCompatActivity() {
 
             override fun downloadSound(sound: SoundItem) {
                 val soundRef = storageRef.child(sound.path)
-                val fileName = "${sound.title}_${sound.author}.3gp"
+                val fileName = "${sound.title}_${sound.author}.m4a"
 
                 val localFile = File(filesDir, fileName)
 
@@ -74,6 +74,7 @@ class SharedSoundsActivity : AppCompatActivity() {
                         "Saved to My Sounds!",
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
+                    soundAdapter.notifyDataSetChanged()
                 }.addOnFailureListener { e ->
                     android.widget.Toast.makeText(
                         this@SharedSoundsActivity,
@@ -98,8 +99,8 @@ class SharedSoundsActivity : AppCompatActivity() {
                     val nameWithoutExt = rawName.substringBeforeLast(".")
                     val parts = nameWithoutExt.split("_")
 
-                    val title = parts[0]
-                    val author = if (parts.size > 1) parts[1] else "Unknown"
+                    val title = parts[1]
+                    val author = if (parts.size > 2) parts[2] else "Unknown"
 
                     val path = itemRef.path
 

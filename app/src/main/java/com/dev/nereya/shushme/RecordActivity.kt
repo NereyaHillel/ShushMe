@@ -1,13 +1,10 @@
 package com.dev.nereya.shushme
 
-import SoundManager
+import com.dev.nereya.shushme.utils.AudioManager
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,21 +20,9 @@ import java.io.File
 
 class RecordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordBinding
-    private lateinit var recorder: SoundManager
+    private lateinit var recorder: AudioManager
     private lateinit var dataManager: DataManager
     private lateinit var firebaseAuth: FirebaseAuth
-    private var noiseLevel = 0
-    private val handler = Handler(Looper.getMainLooper())
-    private val runnable = object : Runnable {
-        override fun run() {
-            if (!::binding.isInitialized) return
-            val rawAmp = recorder.amplitude
-            noiseLevel = (rawAmp / 300).coerceIn(0, 100)
-
-            binding.noiseProgressBar.progress = noiseLevel
-            handler.postDelayed(this, 200)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,18 +36,18 @@ class RecordActivity : AppCompatActivity() {
         }
         firebaseAuth = FirebaseAuth.getInstance()
         dataManager = DataManager
-        recorder = SoundManager(this)
+        recorder = AudioManager(this)
         initViews()
     }
 
     private fun initViews() {
         binding.recordBackBTN.setOnClickListener {
-            recorder.startRecording()
+            recorder.stopRecording()
             finish()
         }
 
         binding.recordSoundsContainer.setOnClickListener {
-            if (recorder.isRecording == false) {
+            if (!recorder.isRecording) {
                 recorder.startRecording()
                 binding.recordUploadListening.visibility = View.VISIBLE
                 binding.recordUploadTitle.text = getString(R.string.listening_subtitle)
@@ -70,15 +55,12 @@ class RecordActivity : AppCompatActivity() {
                 binding.recordUploadPic.backgroundTintList =
                     ColorStateList.valueOf("#FF1744".toColorInt())
                 recorder.isRecording = true
-                handler.post(runnable)
             } else {
                 binding.recordUploadListening.visibility = View.GONE
                 binding.recordUploadTitle.text = getString(R.string.tap_to_record)
                 binding.noiseProgressBar.visibility = View.GONE
                 binding.recordUploadPic.backgroundTintList =
                     ColorStateList.valueOf("#BBDEFB".toColorInt())
-                binding.recordUploadTitle.text = getString(R.string.tap_to_record)
-                handler.removeCallbacks(runnable)
                 showRenameDialog()
                 recorder.stopRecording()
             }
@@ -96,13 +78,13 @@ class RecordActivity : AppCompatActivity() {
                 val newName = editText.text.toString().trim()
 
                 if (newName.isNotEmpty()) {
-                    firebaseAuth.currentUser?.reload()?.addOnCompleteListener { task ->
+                    firebaseAuth.currentUser?.reload()?.addOnCompleteListener { _ ->
                         val userName = firebaseAuth.currentUser?.displayName ?: "User"
                         val persistentName = "${newName}_${userName}"
                         val success = recorder.renameSound("temp", persistentName)
 
                         if (success) {
-                            val finalFile = File(filesDir, "$persistentName.3gp")
+                            val finalFile = File(filesDir, "$persistentName.m4a")
 
                             val soundItem = SoundItem.Builder(
                                 newName,
@@ -112,7 +94,8 @@ class RecordActivity : AppCompatActivity() {
                             ).build()
 
                             dataManager.addSound(soundItem)
-                            SignalManager.getInstance().toast("Saved as $newName", SignalManager.ToastLength.SHORT)
+                            SignalManager.getInstance()
+                                .toast("Saved as $newName", SignalManager.ToastLength.SHORT)
                             finish()
                         }
                     }

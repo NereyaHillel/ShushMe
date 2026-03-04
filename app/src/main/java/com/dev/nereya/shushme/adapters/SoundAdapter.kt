@@ -44,7 +44,7 @@ class SoundAdapter(
             holder.binding.soundImgAction.visibility = View.VISIBLE
         } else {
             val context = holder.itemView.context
-            val fileName = "${item.title}_${item.author}.3gp"
+            val fileName = "${item.title}_${item.author}.m4a"
             val localFile = java.io.File(context.filesDir, fileName)
 
             if (localFile.exists()) {

@@ -29,7 +29,7 @@ The codebase follows a clean, modular structure separating UI, data management, 
 
 * **`model/`**: Contains the `DataManager` singleton handling local file I/O and state, and the `SoundItem` data class utilizing the Builder pattern.
 * **`adapters/`**: Houses the `SoundAdapter`, which dynamically switches between local "selection mode" and cloud "download mode" using shared UI components.
-* **`utils/`**: Contains core hardware wrappers like `SingleSoundPlayer` and `SoundManager` for robust audio lifecycle management.
+* **`utils/`**: Contains core hardware wrappers like `SingleSoundPlayer` and `AudioManager` for robust audio lifecycle management.
 * **`interfaces/`**: Clean callback interfaces (`SoundPlayerCallback`, `FirebaseStorageCallback`, etc.) for decoupling UI components from asynchronous background tasks.
 
 ## ⚙️ Installation & Setup

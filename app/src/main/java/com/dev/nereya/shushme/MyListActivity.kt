@@ -2,7 +2,6 @@ package com.dev.nereya.shushme
 
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -75,7 +74,7 @@ class MyListActivity : AppCompatActivity() {
             }
 
             val fileUri = Uri.fromFile(File(soundToShare.path))
-            val fileName = "${soundToShare.title}_${soundToShare.author}.3gp"
+            val fileName = "${System.currentTimeMillis()}_${soundToShare.title}_${soundToShare.author}.m4a"
             val soundRef = storageRef.child("$fileName")
 
             val uploadTask = soundRef.putFile(fileUri)

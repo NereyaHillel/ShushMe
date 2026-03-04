@@ -1,6 +1,6 @@
 package com.dev.nereya.shushme
 
-import SoundManager
+import com.dev.nereya.shushme.utils.AudioManager
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -32,12 +32,12 @@ class MainActivity : AppCompatActivity() {
     private var noiseLevel = 0
     private var threshold = 50
     private lateinit var ssp: SingleSoundPlayer
-    private lateinit var sm: SoundManager
+    private lateinit var am: AudioManager
     private val PERMISSION_REQUEST_CODE = 200
     private val handler = Handler(Looper.getMainLooper())
     private val runnable: Runnable = object : Runnable {
         override fun run() {
-            val rawAmp = sm.amplitude
+            val rawAmp = am.currentAmplitude
             noiseLevel = (rawAmp / 300).coerceIn(0, 100)
 
             binding.noiseProgressBar.progress = noiseLevel
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
             if (noiseLevel > threshold) {
                 handler.removeCallbacks(this)
-                sm.stopRecording()
+                am.stopListening()
                 binding.noiseProgressBar.progress = 0
                 binding.mainNoiseLevel.text = "SHHH!"
                 SignalManager.getInstance().vibrate()
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                         dataManager.currentSound?.let {
                             ssp.prepareCurrentSound(it.path)
                         }
-                        sm.startRecording()
+                        am.startListening()
                         handler.post(runnable)
                     }
                 })
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        sm = SoundManager(this)
+        am = AudioManager(this)
         ssp = SingleSoundPlayer(this)
         auth = Firebase.auth
 
@@ -92,12 +92,12 @@ class MainActivity : AppCompatActivity() {
         return result == PackageManager.PERMISSION_GRANTED
     }
     private fun startListening() {
-        sm.startRecording()
+        am.startListening()
         handler.removeCallbacks(runnable)
         handler.post(runnable)
     }
     private fun stopListening() {
-        sm.stopRecording()
+        am.stopListening()
         handler.removeCallbacks(runnable)
     }
     private fun requestPermission() {
@@ -188,7 +188,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(runnable)
         stopListening()
         ssp.release()
     }

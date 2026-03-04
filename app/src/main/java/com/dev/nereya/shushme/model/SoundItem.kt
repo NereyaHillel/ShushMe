@@ -7,9 +7,6 @@ data class SoundItem private constructor(
     var isChosen: Boolean
 
 ){
-    fun chooseItem(movie: SoundItem, position: Int) {
-        movie.isChosen = !movie.isChosen
-    }
 
 
     class Builder(

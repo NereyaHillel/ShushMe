@@ -16,9 +16,6 @@ object DataManager {
         }
     }
 
-    fun addSharedSound(sound: SoundItem) {
-        sharedSounds.add(sound)
-    }
 
     fun removeSound(sound: SoundItem) {
         if (sound.path == "system_resource" || sound.title == "Default Shush") {
@@ -54,8 +51,8 @@ object DataManager {
         sounds.add(systemSound)
 
         files?.forEach { file ->
-            if (file.name != "temp.3gp" && file.name.endsWith(".3gp")) {
-                val fullFileName = file.name.removeSuffix(".3gp")
+            if (file.name != "temp.m4a" && file.name.endsWith(".m4a")) {
+                val fullFileName = file.name.removeSuffix(".m4a")
 
                 val parts = fullFileName.split("_")
                 val displayName = parts.getOrNull(0) ?: "Unknown"

@@ -61,18 +61,14 @@ class SignalManager private constructor(context: Context) {
                     ) as Vibrator
                 }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                val oneShotVibrationEffect =
-                    VibrationEffect
-                        .createOneShot(
-                            500,
-                            VibrationEffect.DEFAULT_AMPLITUDE
-                        )
+            val oneShotVibrationEffect =
+                VibrationEffect
+                    .createOneShot(
+                        500,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
 
-                vibrator.vibrate(oneShotVibrationEffect)
-            }else{
-                vibrator.vibrate(500)
-            }
+            vibrator.vibrate(oneShotVibrationEffect)
         }
     }
 }
